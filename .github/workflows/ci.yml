@@ -1,0 +1,55 @@
+---
+name: ci
+on: [push]  # yamllint disable-line rule:truthy
+
+jobs:
+  code-analysis:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        toxenv:
+          - 'flake8'
+          - 'mypy'
+          - 'bandit'
+          - 'pip-audit'
+        experimental: [false]
+        include:
+    container: python:3.11
+    steps:
+      - uses: actions/checkout@v3
+      - run: pip install --upgrade tox
+      - run: tox -e ${{ matrix.toxenv }} || ${{ matrix.experimental }}
+      - uses: actions/upload-artifact@v3
+        with:
+          name: coverage-report-${{ matrix.toxenv }}
+          path: htmlcov
+
+  yamllint:
+    runs-on: ubuntu-latest
+    container: python:3.11
+    steps:
+      - uses: actions/checkout@v3
+      - run: pip install yamllint
+      - run: yamllint --strict --format standard .
+
+  pytest:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 1
+      matrix:
+        python:
+          - {'toxenv': 'py39', 'container': 'python:3.9'}
+          - {'toxenv': 'py310', 'container': 'python:3.10'}
+          - {'toxenv': 'py311', 'container': 'python:3.11'}
+        experimental: [false]
+        include:
+    container:
+      image: ${{ matrix.python.container }}
+    steps:
+      - uses: actions/checkout@v3
+      - run: pip install --upgrade tox
+      - run: tox -e ${{ matrix.python.toxenv }} || ${{ matrix.experimental }}

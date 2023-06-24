@@ -1,6 +1,7 @@
 import jpphonechecker  # noqa
 
 
-def test_empty():
+def test_checker():
     """Test."""
-    pass
+    jpphonechecker.checker.telenavi('0335814321')
+    jpphonechecker.checker.jpnumber('0335814321')

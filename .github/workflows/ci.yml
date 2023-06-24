@@ -15,7 +15,7 @@ jobs:
           - 'bandit'
           - 'pip-audit'
         experimental: [false]
-        include:
+        include: []
     container: python:3.11
     steps:
       - uses: actions/checkout@v3
@@ -46,7 +46,7 @@ jobs:
           - {'toxenv': 'py310', 'container': 'python:3.10'}
           - {'toxenv': 'py311', 'container': 'python:3.11'}
         experimental: [false]
-        include:
+        include: []
     container:
       image: ${{ matrix.python.container }}
     steps:

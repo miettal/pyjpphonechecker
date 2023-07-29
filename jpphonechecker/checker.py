@@ -1,14 +1,12 @@
-import re
 from pprint import pprint as pp
+import re
 import time
 
 import requests
 
 from bs4 import BeautifulSoup
 
-from playwright.sync_api import Playwright
 from playwright.sync_api import sync_playwright
-from playwright.sync_api import expect
 
 
 def normalize(s):
@@ -17,6 +15,7 @@ def normalize(s):
 
 
 def telenavi(phone_number):
+    """電話帳ナビで検索する."""
     url = f'https://www.telnavi.jp/phone/{phone_number}'
     response = requests.get(url)
     html = response.text
@@ -40,6 +39,7 @@ def telenavi(phone_number):
 
 
 def jpnumber(phone_number, headless=True):
+    """日本、電話番号検索で検索する."""
     ua = 'Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/114.0.0.0 Safari/537.36'
     with sync_playwright() as playwright:
         browser = playwright.chromium.launch(headless=headless)

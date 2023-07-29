@@ -1,1 +1,1 @@
-from .checker import *
+from .checker import *  # noqa

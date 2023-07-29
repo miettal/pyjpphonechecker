@@ -8,7 +8,7 @@ from playwright.sync_api import Playwright, sync_playwright, expect
 
 
 def telenavi(phone_number):
-    url = f"https://www.telnavi.jp/phone/{phone_number}"
+    url = f'https://www.telnavi.jp/phone/{phone_number}'
     response = requests.get(url)
     html = response.text
     soup = BeautifulSoup(html, 'html.parser')
@@ -36,12 +36,12 @@ def jpnumber(phone_number, headless=True):
         browser = playwright.chromium.launch(headless=headless)
         context = browser.new_context(user_agent=ua)
         page = context.new_page()
-        page.goto("https://www.jpnumber.com/")
-        page.get_by_placeholder("電話番号、事業者名、住所などのキーワードから検索").click()
-        page.get_by_placeholder("電話番号、事業者名、住所などのキーワードから検索").fill(phone_number)
-        page.locator("#DoSearch").click()
+        page.goto('https://www.jpnumber.com/')
+        page.get_by_placeholder('電話番号、事業者名、住所などのキーワードから検索').click()
+        page.get_by_placeholder('電話番号、事業者名、住所などのキーワードから検索').fill(phone_number)
+        page.locator('#DoSearch').click()
         time.sleep(0.1)
-        page.get_by_role("link", name=re.compile(f"{phone_number} \\| .*")).click()
+        page.get_by_role('link', name=re.compile(f'{phone_number} \\| .*')).click()
         time.sleep(0.1)
         url = page.url
         html = page.content()

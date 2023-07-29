@@ -3,8 +3,17 @@ from pprint import pprint as pp
 import time
 
 import requests
+
 from bs4 import BeautifulSoup
-from playwright.sync_api import Playwright, sync_playwright, expect
+
+from playwright.sync_api import Playwright
+from playwright.sync_api import sync_playwright
+from playwright.sync_api import expect
+
+
+def normalize(s):
+    """全角・半角などの揺れを正規化する."""
+    return jaconv.normalize(jaconv.z2h(jaconv.h2z(s, kana=True, ascii=False, digit=False), kana=False, ascii=True, digit=True))
 
 
 def telenavi(phone_number):
